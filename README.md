@@ -2,6 +2,8 @@
 
 # react-food-ordering-app
 
+Using basic react features to make a food ordering app.
+
 ### `npm install`
 
 ### `npm start`
