@@ -29,7 +29,7 @@ const Cart = (props) => {
 
   const submitOrderHandler = (userData) => {
     fetch(
-      "https://react-http-a6d0b-default-rtdb.europe-west1.firebasedatabase.app/orders.json",
+      "https://react-meals-86171-default-rtdb.europe-west1.firebasedatabase.app/orders.json",
       {
         method: "POST",
         body: JSON.stringify({
