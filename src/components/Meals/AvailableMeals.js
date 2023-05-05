@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Card from "../UI/Card";
 import MealItem from "./MealItem/MealItem";
 import classes from "./AvailableMeals.module.css";
+import { SpinningCircles } from "react-loading-icons";
 
 const AvailableMeals = (props) => {
   const [meals, setMeals] = useState([]);
@@ -11,40 +12,43 @@ const AvailableMeals = (props) => {
 
   useEffect(() => {
     const fetchMeals = async () => {
-      const response = await fetch(
-        "https://react-http-a6d0b-default-rtdb.europe-west1.firebasedatabase.app/meals.json"
-      );
+      try {
+        const response = await fetch(
+          "https://react-meals-86171-default-rtdb.europe-west1.firebasedatabase.app/meals.json"
+        );
 
-      if (!response.ok) {
-        throw new Error("Something went wrong!");
+        if (!response.ok) {
+          throw new Error("Something went wrong!");
+        }
+
+        const responseData = await response.json();
+        const loadedMeals = [];
+
+        for (const key in responseData) {
+          loadedMeals.push({
+            id: key,
+            name: responseData[key].name,
+            description: responseData[key].description,
+            price: responseData[key].price,
+          });
+        }
+
+        setMeals(loadedMeals);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        setHttpError(error.message);
       }
-
-      const responseData = await response.json();
-      const loadedMeals = [];
-
-      for (const key in responseData) {
-        loadedMeals.push({
-          id: key,
-          name: responseData[key].name,
-          description: responseData[key].description,
-          price: responseData[key].price,
-        });
-      }
-
-      setMeals(loadedMeals);
-      setIsLoading(false);
     };
 
-    fetchMeals().catch((error) => {
-      setIsLoading(false);
-      setHttpError(error.message);
-    });
+    fetchMeals();
   }, []);
 
   if (isLoading) {
     return (
       <section className={classes.MealsLoading}>
-        <p>Loading...</p>
+        <p>Please wait a moment while the data is loading...</p>
+        <SpinningCircles />
       </section>
     );
   }

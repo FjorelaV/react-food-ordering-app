@@ -10,6 +10,10 @@
   color: #f1f1f1;
 }
 
+.MealsLoading p {
+  color: rgb(184, 134, 11);
+}
+
 .MealsError {
   text-align: center;
   color: red;
